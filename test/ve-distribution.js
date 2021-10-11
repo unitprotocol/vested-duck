@@ -29,7 +29,7 @@ describe("veDistribution", function() {
     usdp = await TestTokenFactory.deploy()
     veDuck = await VeDuckFactory.deploy(duck.address, "veDuck", "veDuck", '1.0.0')
     veDistribution = await VeDistributionFactory.deploy(veDuck.address, startTime, usdp.address, admin.address, admin.address);
-  });
+  })
 
   it("deposits after", async function() {
     const amount = 1000n * 10n ** 18n
@@ -81,7 +81,7 @@ describe("veDistribution", function() {
     await veDistribution.connect(alice)['claim()']()
 
     expect(await usdp.balanceOf(alice.address)).to.be.closeTo(BigNumber.from(21n * 10n ** 18n), 10n)
-  });
+  })
 
   it("deposits before", async function() {
     const amount = 1000n * 10n ** 18n
@@ -110,7 +110,7 @@ describe("veDistribution", function() {
     await veDistribution.connect(alice)['claim()']()
 
     expect(await usdp.balanceOf(alice.address)).to.be.closeTo(BigNumber.from(distributionAmount), 10n)
-  });
+  })
 
   it("deposits twice", async function() {
     const amount = 1000n * 10n ** 18n
@@ -147,7 +147,7 @@ describe("veDistribution", function() {
     const excludedReward = await veDistribution.tokens_per_week(excludeTime)
 
     expect((await usdp.balanceOf(alice.address)).add(excludedReward)).to.be.closeTo(BigNumber.from(distributionAmount), 10n)
-  });
+  })
 
   it("deposits parallel", async function() {
     const amount = 1000n * 10n ** 18n
@@ -185,7 +185,7 @@ describe("veDistribution", function() {
     const balanceBob = await usdp.balanceOf(bob.address)
 
     expect(balanceAlice.add(balanceBob)).to.be.closeTo(BigNumber.from(distributionAmount), 10n)
-  });
-});
+  })
+})
 
 const chainTime = async () => (await ethers.provider.getBlock('latest')).timestamp
