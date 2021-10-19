@@ -4,9 +4,9 @@ Based on [veCRV](https://github.com/curvefi/curve-dao-contracts)
 
 ### Mainnet addresses
 
-veDuck [0x18E6C923d57a1378b6AdDc473A59B40D031069ec](https://etherscan.io/address/0x18E6C923d57a1378b6AdDc473A59B40D031069ec#code)
+veDuck [0x48DdD27a4d54CD3e8c34F34F7e66e998442DBcE3](https://etherscan.io/address/0x48DdD27a4d54CD3e8c34F34F7e66e998442DBcE3#code)
 
-veDistribution [0xdD4C0521AA148fb704f12330C4fa16E631a26d96](https://etherscan.io/address/0xdD4C0521AA148fb704f12330C4fa16E631a26d96#code)
+veDistribution [0x9f2138ccb930f0654B2C40E7e29FF8291452Eed8](https://etherscan.io/address/0x9f2138ccb930f0654B2C40E7e29FF8291452Eed8#code)
 
 ### Test
 
