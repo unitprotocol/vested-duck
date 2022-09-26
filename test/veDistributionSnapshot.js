@@ -114,6 +114,9 @@ describe("veDistributionSnapshot", function() {
     await checkBalances(this.token1, 0, 0, 0, 0, 0);
     await checkBalances(this.token2, 0, 0, 0, 0, 0);
     await checkBalances(this.token3, 0, 0, 0, 0, 0);
+    await checkAvailableRewards(this.token1, 0, 0, 0, 0);
+    await checkAvailableRewards(this.token2, 0, 0, 0, 0);
+    await checkAvailableRewards(this.token3, 0, 0, 0, 0);
 
 
     await this.token1.mint(this.distribution.address, 10000);
@@ -122,16 +125,25 @@ describe("veDistributionSnapshot", function() {
     await checkBalances(this.token1, 10000, 0, 0, 0, 0);
     await checkBalances(this.token2, 33333, 0, 0, 0, 0);
     await checkBalances(this.token3, 8,     0, 0, 0, 0);
+    await checkAvailableRewards(this.token1, 1000, 2000, 3000, 4000);
+    await checkAvailableRewards(this.token2, 3333, 6666, 9999, 13333);
+    await checkAvailableRewards(this.token3, 0,    1,    2,    3);
 
     await this.distribution.connect(this.user1).withdrawReward([this.token1.address]);
     await checkBalances(this.token1, 9000,  1000, 0, 0, 0);
     await checkBalances(this.token2, 33333, 0, 0, 0, 0);
     await checkBalances(this.token3, 8,     0, 0, 0, 0);
+    await checkAvailableRewards(this.token1, 0,    2000, 3000, 4000);
+    await checkAvailableRewards(this.token2, 3333, 6666, 9999, 13333);
+    await checkAvailableRewards(this.token3, 0,    1,    2,    3);
 
     await this.distribution.connect(this.user1).withdrawReward([this.token2.address]);
     await checkBalances(this.token1, 9000,  1000, 0, 0, 0);
     await checkBalances(this.token2, 30000, 3333, 0, 0, 0);
     await checkBalances(this.token3, 8,     0,    0, 0, 0);
+    await checkAvailableRewards(this.token1, 0, 2000, 3000, 4000);
+    await checkAvailableRewards(this.token2, 0, 6666, 9999, 13333);
+    await checkAvailableRewards(this.token3, 0, 1,    2,    3);
     await checkWithdrawFailed(this.user1);
 
     ///////
@@ -140,6 +152,9 @@ describe("veDistributionSnapshot", function() {
     await checkBalances(this.token1, 6000,  1000, 0, 3000, 0);
     await checkBalances(this.token2, 20001, 3333, 0, 9999, 0);
     await checkBalances(this.token3, 6,     0,    0, 2,    0);
+    await checkAvailableRewards(this.token1, 0, 2000, 0, 4000);
+    await checkAvailableRewards(this.token2, 0, 6666, 0, 13333);
+    await checkAvailableRewards(this.token3, 0, 1,    0, 3);
     await checkWithdrawFailed(this.user3);
 
     ///////
@@ -148,6 +163,9 @@ describe("veDistributionSnapshot", function() {
     await checkBalances(this.token1, 2000, 1000, 0, 3000, 4000);
     await checkBalances(this.token2, 6668, 3333, 0, 9999, 13333);
     await checkBalances(this.token3, 3,    0,    0, 2,    3);
+    await checkAvailableRewards(this.token1, 0, 2000, 0, 0);
+    await checkAvailableRewards(this.token2, 0, 6666, 0, 0);
+    await checkAvailableRewards(this.token3, 0, 1,    0, 0);
     await checkWithdrawFailed(this.user4);
 
     ///////
@@ -156,6 +174,9 @@ describe("veDistributionSnapshot", function() {
     await checkBalances(this.token1, 0, 1000, 2000, 3000, 4000);
     await checkBalances(this.token2, 2, 3333, 6666, 9999, 13333);
     await checkBalances(this.token3, 2, 0,    1,    2,    3);
+    await checkAvailableRewards(this.token1, 0, 0, 0, 0);
+    await checkAvailableRewards(this.token2, 0, 0, 0, 0);
+    await checkAvailableRewards(this.token3, 0, 0, 0, 0);
     await checkWithdrawFailed(this.user2);
 
     ///////
@@ -166,6 +187,9 @@ describe("veDistributionSnapshot", function() {
     await checkBalances(this.token1, 10000, 1000, 2000, 3000, 4000);
     await checkBalances(this.token2, 10,    3333, 6666, 9999, 13333);
     await checkBalances(this.token3, 4,     0,    1,    2,    3);
+    await checkAvailableRewards(this.token1, 1000, 2000, 3000, 4000);
+    await checkAvailableRewards(this.token2, 1, 2, 3, 3);
+    await checkAvailableRewards(this.token3, 1, 1, 1, 1);
 
     //////
 
@@ -173,6 +197,9 @@ describe("veDistributionSnapshot", function() {
     await checkBalances(this.token1, 9000, 2000, 2000, 3000, 4000);
     await checkBalances(this.token2, 9,    3334, 6666, 9999, 13333);
     await checkBalances(this.token3, 3,    1,    1,    2,    3);
+    await checkAvailableRewards(this.token1, 0, 2000, 3000, 4000);
+    await checkAvailableRewards(this.token2, 0, 2,    3,    3);
+    await checkAvailableRewards(this.token3, 0, 1,    1,    1);
     await checkWithdrawFailed(this.user1);
 
     //////
@@ -181,6 +208,9 @@ describe("veDistributionSnapshot", function() {
     await checkBalances(this.token1, 6000, 2000, 2000, 6000,  4000);
     await checkBalances(this.token2, 6,    3334, 6666, 10002, 13333);
     await checkBalances(this.token3, 2,    1,    1,    3,     3);
+    await checkAvailableRewards(this.token1, 0, 2000, 0, 4000);
+    await checkAvailableRewards(this.token2, 0, 2,    0, 3);
+    await checkAvailableRewards(this.token3, 0, 1,    0, 1);
     await checkWithdrawFailed(this.user3);
 
     //////
@@ -189,6 +219,9 @@ describe("veDistributionSnapshot", function() {
     await checkBalances(this.token1, 4000, 2000, 4000, 6000,  4000);
     await checkBalances(this.token2, 4,    3334, 6668, 10002, 13333);
     await checkBalances(this.token3, 1,    1,    2,    3,     3);
+    await checkAvailableRewards(this.token1, 0, 0, 0, 4000);
+    await checkAvailableRewards(this.token2, 0, 0, 0, 3);
+    await checkAvailableRewards(this.token3, 0, 0, 0, 1);
     await checkWithdrawFailed(this.user2);
 
     //////
@@ -197,6 +230,9 @@ describe("veDistributionSnapshot", function() {
     await checkBalances(this.token1, 0, 2000, 4000, 6000,  8000);
     await checkBalances(this.token2, 1, 3334, 6668, 10002, 13336);
     await checkBalances(this.token3, 0, 1,    2,    3,     4);
+    await checkAvailableRewards(this.token1, 0, 0, 0, 0);
+    await checkAvailableRewards(this.token2, 0, 0, 0, 0);
+    await checkAvailableRewards(this.token3, 0, 0, 0, 0);
     await checkWithdrawFailed(this.user2);
   })
 
@@ -219,6 +255,9 @@ describe("veDistributionSnapshot", function() {
     await checkBalances(this.token1, 0, 0, 0, 0, 0);
     await checkBalances(this.token2, 0, 0, 0, 0, 0);
     await checkBalances(this.token3, 0, 0, 0, 0, 0);
+    await checkAvailableRewards(this.token1, 0, 0, 0, 0);
+    await checkAvailableRewards(this.token2, 0, 0, 0, 0);
+    await checkAvailableRewards(this.token3, 0, 0, 0, 0);
 
 
     await this.token1.mint(this.distribution.address, 10000);
@@ -227,16 +266,25 @@ describe("veDistributionSnapshot", function() {
     await checkBalances(this.token1, 10000, 0, 0, 0, 0);
     await checkBalances(this.token2, 33333, 0, 0, 0, 0);
     await checkBalances(this.token3, 8,     0, 0, 0, 0);
+    await checkAvailableRewards(this.token1, 1000, 2000, 3000, 4000);
+    await checkAvailableRewards(this.token2, 3333, 6666, 9999, 13333);
+    await checkAvailableRewards(this.token3, 0,    1,    2,    3);
 
     await this.distribution.connect(this.user1).withdrawReward([this.token1.address]);
     await checkBalances(this.token1, 9000,  1000, 0, 0, 0);
     await checkBalances(this.token2, 33333, 0, 0, 0, 0);
     await checkBalances(this.token3, 8,     0, 0, 0, 0);
+    await checkAvailableRewards(this.token1, 0,    2000, 3000, 4000);
+    await checkAvailableRewards(this.token2, 3333, 6666, 9999, 13333);
+    await checkAvailableRewards(this.token3, 0,    1,    2,    3);
 
     await this.distribution.connect(this.user1).withdrawReward([this.token2.address]);
     await checkBalances(this.token1, 9000,  1000, 0, 0, 0);
     await checkBalances(this.token2, 30000, 3333, 0, 0, 0);
     await checkBalances(this.token3, 8,     0,    0, 0, 0);
+    await checkAvailableRewards(this.token1, 0, 2000, 3000, 4000);
+    await checkAvailableRewards(this.token2, 0, 6666, 9999, 13333);
+    await checkAvailableRewards(this.token3, 0,    1, 2,    3);
     await checkWithdrawFailed(this.user1);
 
     ///////
@@ -245,6 +293,9 @@ describe("veDistributionSnapshot", function() {
     await checkBalances(this.token1, 6000,  1000, 0, 3000, 0);
     await checkBalances(this.token2, 20001, 3333, 0, 9999, 0);
     await checkBalances(this.token3, 6,     0,    0, 2,    0);
+    await checkAvailableRewards(this.token1, 0, 2000, 0, 4000);
+    await checkAvailableRewards(this.token2, 0, 6666, 0, 13333);
+    await checkAvailableRewards(this.token3, 0,    1, 0, 3);
     await checkWithdrawFailed(this.user3);
 
     ///////
@@ -255,6 +306,9 @@ describe("veDistributionSnapshot", function() {
     await checkBalances(this.token1, 16000, 1000, 0, 3000, 0);
     await checkBalances(this.token2, 20009, 3333, 0, 9999, 0);
     await checkBalances(this.token3, 8,     0,    0, 2,    0);
+    await checkAvailableRewards(this.token1, 1000, 4000, 3000, 8000);
+    await checkAvailableRewards(this.token2, 1,    6668, 3,    13336);
+    await checkAvailableRewards(this.token3, 1,    2,    1,    4);
 
     ///////
 
@@ -262,6 +316,9 @@ describe("veDistributionSnapshot", function() {
     await checkBalances(this.token1, 8000, 1000, 0, 3000, 8000);
     await checkBalances(this.token2, 6673, 3333, 0, 9999, 13336);
     await checkBalances(this.token3, 4,    0,    0, 2,    4);
+    await checkAvailableRewards(this.token1, 1000, 4000, 3000, 0);
+    await checkAvailableRewards(this.token2, 1,    6668, 3,    0);
+    await checkAvailableRewards(this.token3, 1,    2,    1,    0);
     await checkWithdrawFailed(this.user4);
 
     ///////
@@ -270,6 +327,9 @@ describe("veDistributionSnapshot", function() {
     await checkBalances(this.token1, 5000, 1000, 0, 6000,  8000);
     await checkBalances(this.token2, 6670, 3333, 0, 10002, 13336);
     await checkBalances(this.token3, 3,    0,    0, 3,     4);
+    await checkAvailableRewards(this.token1, 1000, 4000, 0, 0);
+    await checkAvailableRewards(this.token2, 1,    6668, 0, 0);
+    await checkAvailableRewards(this.token3, 1,    2,    0, 0);
     await checkWithdrawFailed(this.user3);
 
     ///////
@@ -278,6 +338,9 @@ describe("veDistributionSnapshot", function() {
     await checkBalances(this.token1, 1000, 1000, 4000, 6000,  8000);
     await checkBalances(this.token2, 2,    3333, 6668, 10002, 13336);
     await checkBalances(this.token3, 1,    0,    2,    3,     4);
+    await checkAvailableRewards(this.token1, 1000, 0, 0, 0);
+    await checkAvailableRewards(this.token2, 1,    0, 0, 0);
+    await checkAvailableRewards(this.token3, 1,    0, 0, 0);
     await checkWithdrawFailed(this.user2);
 
     ///////
@@ -286,6 +349,9 @@ describe("veDistributionSnapshot", function() {
     await checkBalances(this.token1, 0, 2000, 4000, 6000,  8000);
     await checkBalances(this.token2, 1, 3334, 6668, 10002, 13336);
     await checkBalances(this.token3, 0, 1,    2,    3,     4);
+    await checkAvailableRewards(this.token1, 0, 0, 0, 0);
+    await checkAvailableRewards(this.token2, 0, 0, 0, 0);
+    await checkAvailableRewards(this.token3, 0, 0, 0, 0);
     await checkWithdrawFailed(this.user1);
   })
 })
@@ -305,6 +371,13 @@ async function checkBalances(token, expectedDistributionBalance, expectedBalance
   expect(await context.distribution.rewardsSent(token.address)).to.be.equal(
       expectedBalance1+expectedBalance2+expectedBalance3+expectedBalance4
   );
+}
+
+async function checkAvailableRewards(token, expectedBalance1, expectedBalance2, expectedBalance3, expectedBalance4) {
+  expect(await context.distribution.availableReward(context.user1.address, token.address)).to.be.equal(expectedBalance1);
+  expect(await context.distribution.availableReward(context.user2.address, token.address)).to.be.equal(expectedBalance2);
+  expect(await context.distribution.availableReward(context.user3.address, token.address)).to.be.equal(expectedBalance3);
+  expect(await context.distribution.availableReward(context.user4.address, token.address)).to.be.equal(expectedBalance4);
 }
 
 async function checkWithdrawFailed(user) {

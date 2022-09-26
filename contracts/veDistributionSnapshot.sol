@@ -56,6 +56,15 @@ contract veDistributionSnapshot is Ownable, ReentrancyGuard {
         return users;
     }
 
+    function availableReward(address user_, IERC20 token_) public view returns (uint) {
+        uint userBalance = balanceOf[user_];
+        if (userBalance == 0) {
+            return 0;
+        }
+
+        return _calcTotalUserReward(userBalance, token_) - rewardsSentToUser[token_][user_];
+    }
+
     function withdrawReward(IERC20[] calldata tokens_) public nonReentrant {
         require(owner() == address(0), 'DISTRIBUTION: CONTRACT_IS_NOT_FINALIZED');
 
@@ -68,9 +77,7 @@ contract veDistributionSnapshot is Ownable, ReentrancyGuard {
         uint userBalance = balanceOf[msg.sender];
         require(userBalance > 0, 'DISTRIBUTION: AUTH_FAILED');
 
-        uint totalRewardsReceived = rewardsSent[token_] + token_.balanceOf(address(this));
-
-        uint totalUserReward = totalRewardsReceived * userBalance / totalSupply;
+        uint totalUserReward = _calcTotalUserReward(userBalance, token_);
         require(totalUserReward > rewardsSentToUser[token_][msg.sender], 'DISTRIBUTION: NOTHING_TO_WITHDRAW');
 
         uint amountToSend = totalUserReward - rewardsSentToUser[token_][msg.sender];
@@ -79,5 +86,11 @@ contract veDistributionSnapshot is Ownable, ReentrancyGuard {
 
         token_.safeTransfer(msg.sender, amountToSend);
         emit RewardSent(token_, msg.sender, amountToSend);
+    }
+
+    function _calcTotalUserReward(uint userBalance_, IERC20 token_) internal view returns (uint) {
+        uint totalRewardsReceived = rewardsSent[token_] + token_.balanceOf(address(this));
+
+        return totalRewardsReceived * userBalance_ / totalSupply;
     }
 }
