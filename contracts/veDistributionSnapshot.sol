@@ -28,7 +28,7 @@ contract veDistributionSnapshot is Ownable, ReentrancyGuard {
     /** @notice amounts of reward token already sent to user */
     mapping(IERC20 => mapping (address => uint)) public rewardsSentToUser;
 
-    event RewardSent(IERC20 token, address user, uint amount);
+    event RewardSent(IERC20 indexed token, address indexed user, uint amount);
 
     /**
      * @notice add users' balances from snapshot
@@ -56,7 +56,7 @@ contract veDistributionSnapshot is Ownable, ReentrancyGuard {
         return users;
     }
 
-    function withdrawReward(IERC20[] calldata tokens_) public {
+    function withdrawReward(IERC20[] calldata tokens_) public nonReentrant {
         require(owner() == address(0), 'DISTRIBUTION: CONTRACT_IS_NOT_FINALIZED');
 
         for (uint i; i < tokens_.length; i++) {
@@ -64,7 +64,7 @@ contract veDistributionSnapshot is Ownable, ReentrancyGuard {
         }
     }
 
-    function _withdrawReward(IERC20 token_) internal nonReentrant {
+    function _withdrawReward(IERC20 token_) internal {
         uint userBalance = balanceOf[msg.sender];
         require(userBalance > 0, 'DISTRIBUTION: AUTH_FAILED');
 
